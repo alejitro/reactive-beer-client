@@ -2,9 +2,11 @@ package com.alejitro.beerclient.reactive.client;
 
 import com.alejitro.beerclient.reactive.common.model.BeerDto;
 import com.alejitro.beerclient.reactive.common.model.BeerPagedList;
+import com.alejitro.beerclient.reactive.config.WebClientProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -16,6 +18,7 @@ public class BeerClientImpl implements BeerClient {
 
     private final WebClient webClient;
 
+
     @Override
     public Mono<BeerDto> getBeerById(UUID beerId, Boolean showInventoryOnHand) {
         return null;
@@ -23,12 +26,20 @@ public class BeerClientImpl implements BeerClient {
 
     @Override
     public Mono<BeerPagedList> listBeers(Integer pageNumber, Integer pageSize, String beerName, String beerStyle, Boolean showInventoryOnHand) {
-        return null;
+        return webClient.get()
+                .uri(WebClientProperties.BEER_V1_PATH)
+                .retrieve()
+                .bodyToMono(BeerPagedList.class);
     }
 
     @Override
-    public Mono<ResponseEntity> createBeer(BeerDto beerDto) {
-        return null;
+    public Mono<ResponseEntity<Void>> createBeer(BeerDto beerDto) {
+
+        return webClient.post()
+                .uri(uriBuilder -> uriBuilder.path(WebClientProperties.BEER_V1_PATH).build())
+                .body(BodyInserters.fromValue(beerDto))
+                .retrieve()
+                .toBodilessEntity();
     }
 
     @Override

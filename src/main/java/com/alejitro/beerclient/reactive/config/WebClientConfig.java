@@ -2,6 +2,8 @@ package com.alejitro.beerclient.reactive.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.client.reactive.ClientHttpConnector;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import static com.alejitro.beerclient.reactive.config.WebClientProperties.BASE_URL;
@@ -10,6 +12,7 @@ import static com.alejitro.beerclient.reactive.config.WebClientProperties.BASE_U
 public class WebClientConfig {
     @Bean
     public WebClient webClient(){
-        return WebClient.builder().baseUrl(BASE_URL).build();
+        ClientHttpConnector httpConnector = new ReactorClientHttpConnector();
+        return WebClient.builder().clientConnector(httpConnector).baseUrl(BASE_URL).build();
     }
 }

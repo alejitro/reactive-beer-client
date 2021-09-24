@@ -41,11 +41,12 @@ public class Beer {
 
     private Integer quantityOnHand;
     private BigDecimal price;
-
+    /*
     @CreationTimestamp
     @Column(updatable = false)
     private Timestamp createdDate;
 
     @UpdateTimestamp
     private Timestamp lastModifiedDate;
+    */
 }
